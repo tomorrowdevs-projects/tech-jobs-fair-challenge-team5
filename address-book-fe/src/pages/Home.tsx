@@ -23,11 +23,7 @@ const Home = () => {
                 {/* <p>Select all</p> */}
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
-                {data.map((contact) => {
-                    return (
-                        <ContactCard contact={contact} />
-                    )
-                })}
+                {data.map((contact) => <ContactCard contact={contact} />)}
             </div>
         </div>
     )
