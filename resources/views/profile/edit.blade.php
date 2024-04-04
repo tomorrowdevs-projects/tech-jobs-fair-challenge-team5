@@ -1,29 +1,34 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+@extends('layouts.admin')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
+@section('content')
+    @include('partials.errors')
+    <div class="container">
+        <form action="{{route('profile.update', Auth::user())}}" method="POST">
+            @csrf
+            @method('PATCH')
+            <h1 class="text-center">Edit your profile</h1>
+            <div class="mb-3">
+                <label class="form-label">
+                    <h2>Name</h2>
+                </label>
+                <input type="text" class="form-control" name="name" value="{{ old('name', Auth::user()->name) }}">
             </div>
-
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
+            <div class="mb-3">
+                <label class="form-label">
+                    <h2>E-mail</h2>
+                </label>
+                <input type="text" class="form-control" name="email" value="{{ old('email', Auth::user()->email) }}">
             </div>
-
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
+            <div class="mb-3">
+                <label class="form-label">
+                    <h2>Telephone number</h2>
+                </label>
+                <input type="text" class="form-control" name="phone_number" value="{{ old('phone_number', Auth::user()->phone_number) }}">
             </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+        <div>
+            <a class="btn btn-secondary" href="{{ route('dashboard') }}">Go back to dashboard</a>
         </div>
     </div>
-</x-app-layout>
+@endsection
