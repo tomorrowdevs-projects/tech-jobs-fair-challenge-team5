@@ -2,11 +2,11 @@ import { MdKeyboardArrowDown, MdOutlineEmail } from "react-icons/md"
 import { FaPhone } from "react-icons/fa6"
 import { Contact } from "../types"
 
-interface Props {
+interface ContactProps {
     contact: Contact
 }
 
-const ContactCard = ({ contact }: Props) => {
+const ContactCard = ({ contact }: ContactProps) => {
     return (
         <div className="flex w-full justify-between items-center p-2 bg-white rounded-md card-shadow" >
             <div className="flex justify-start items-center gap-2 font-arimo">
