@@ -1,0 +1,72 @@
+[
+  {
+    "id": "1",
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "phone": "555-123-4567",
+    "avatar": "https://cdn.icon-icons.com/icons2/4182/PNG/512/avatar_person_boy_male_people_guy_character_user_profile_young_man_west_shirt_short_hair_icon_262233.png"
+  },
+  {
+    "id": "2",
+    "name": "Jane Smith",
+    "email": "jane.smith@example.com",
+    "phone": "555-234-5678",
+    "avatar": "https://cdn.icon-icons.com/icons2/4182/PNG/512/avatar_person_boy_male_people_guy_young_man_metaverse_metapeople_beard_bald_hair_short_beanie_hat_icon_262239.png"
+  },
+  {
+    "id": "3",
+    "name": "Emily Johnson",
+    "email": "emily.johnson@example.com",
+    "phone": "555-345-6789",
+    "avatar": "https://cdn.icon-icons.com/icons2/4182/PNG/512/avatar_person_boy_male_people_guy_character_user_profile_young_man_short_hair_tshirt_beard_west_shirt_icon_262228.png"
+  },
+  {
+    "id": "4",
+    "name": "Michael Brown",
+    "email": "michael.brown@example.com",
+    "phone": "555-456-7890",
+    "avatar": "https://cdn.icon-icons.com/icons2/4182/PNG/512/avatar_person_boy_male_people_guy_young_man_metaverse_metapeople_bald_hair_short_beard_with_beanie_hat_icon_262236.png"
+  },
+  {
+    "id": "5",
+    "name": "Jessica Garcia",
+    "email": "jessica.garcia@example.com",
+    "phone": "555-567-8901",
+    "avatar": "https://cdn.icon-icons.com/icons2/4182/PNG/512/avatar_person_boy_male_people_guy_user_profile_metaverse_metapeople_virtual_brown_curly_hair_young_jacket_hoodie_man_icon_262237.png"
+  },
+  {
+    "id": "6",
+    "name": "Daniel Martinez",
+    "email": "daniel.martinez@example.com",
+    "phone": "555-678-9012",
+    "avatar": "https://cdn.icon-icons.com/icons2/4182/PNG/512/avatar_person_boy_male_people_guy_character_user_profile_young_man_work_west_shirt_short_hair_clothes_glasses_icon_262226.png"
+  },
+  {
+    "id": "7",
+    "name": "Ashley Rodriguez",
+    "email": "ashley.rodriguez@example.com",
+    "phone": "555-789-0123",
+    "avatar": "https://cdn.icon-icons.com/icons2/4182/PNG/512/avatar_person_boy_male_people_guy_character_user_profile_young_man_short_hair_tshirt_beard_west_shirt_mohawk_icon_262229.png"
+  },
+  {
+    "id": "8",
+    "name": "Christopher Wilson",
+    "email": "christopher.wilson@example.com",
+    "phone": "555-890-1234",
+    "avatar": "https://cdn.icon-icons.com/icons2/4182/PNG/512/avatar_person_boy_male_people_guy_user_profile_metaverse_metapeople_short_tshirt_virtual_brown_curly_hair_young_jacket_man_icon_262240.png"
+  },
+  {
+    "id": "9",
+    "name": "Amanda Lee",
+    "email": "amanda.lee@example.com",
+    "phone": "555-901-2345",
+    "avatar": "https://cdn.icon-icons.com/icons2/4182/PNG/512/avatar_person_boy_male_people_guy_character_user_profile_young_man_jacket_sweater_hoodie_fashion_shirt_technology_bald_hair_with_vr_icon_262231.png"
+  },
+  {
+    "id": "10",
+    "name": "Joshua White",
+    "email": "joshua.white@example.com",
+    "phone": "555-012-3456",
+    "avatar": "https://cdn.icon-icons.com/icons2/4182/PNG/512/avatar_person_boy_male_people_character_metaverse_metapeople_virtual_dreadlocked_green_hair_sweater_jacket_hoodie_lifestyle_young_short_cloth_hairstyle_dreadlocket_man_icon_262235.png"
+  }
+]
