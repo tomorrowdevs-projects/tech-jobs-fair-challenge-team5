@@ -40,6 +40,7 @@
                             </div>
                         </div>
                         
+        
 
                         <div class="mb-4 row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
@@ -56,6 +57,23 @@
                         </div>
 
                         <div class="mb-4 row">
+                            <label for="type" class="col-md-4 col-form-label text-md-right">{{ __('Type') }}</label>
+                            <div class="col-md-6">
+                                <select id="type" class="form-control @error('type') is-invalid @enderror" name="type" required>
+                                    <option value="">Select a type</option>
+                                    @foreach($types as $type)
+                                        <option value="{{ $type->id }}" {{ old('type') == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('type')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4 row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
@@ -69,6 +87,7 @@
                             </div>
                         </div>
 
+                        
                         <div class="mb-4 row">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
