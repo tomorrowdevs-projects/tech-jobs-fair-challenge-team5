@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\TypeController;
 use Illuminate\Http\Request;
@@ -20,14 +21,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/contacts', [ContactController::class, 'index']);
-Route::get('/contacts/{id}', [ContactController::class, 'show']);
-Route::post('/contacts', [ContactController::class, 'store']);
-Route::put('/contacts/{id}', [ContactController::class, 'update']);
-Route::delete('/contacts/{id}', [ContactController::class, 'destroy']);
+Route::get('/contacts', [ContactController::class, 'index'])->middleware('auth:sanctum');
+Route::get('/contacts/{id}', [ContactController::class, 'show'])->middleware('auth:sanctum');
+Route::post('/contacts', [ContactController::class, 'store'])->middleware('auth:sanctum');
+Route::put('/contacts/{id}', [ContactController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->middleware('auth:sanctum');
 
-Route::get('/types', [TypeController::class, 'index']);
-Route::get('/types/{id}', [TypeController::class, 'show']);
-Route::post('/types', [TypeController::class, 'store']);
-Route::put('/types/{id}', [TypeController::class, 'update']);
-Route::delete('/types/{id}', [TypeController::class, 'destroy']);
+Route::get('/types', [TypeController::class, 'index'])->middleware('auth:sanctum');
+Route::get('/types/{id}', [TypeController::class, 'show'])->middleware('auth:sanctum');
+Route::post('/types', [TypeController::class, 'store'])->middleware('auth:sanctum');
+Route::put('/types/{id}', [TypeController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/types/{id}', [TypeController::class, 'destroy'])->middleware('auth:sanctum');
+
+Route::post('/auth/register', [AuthController::class, 'createUser']);
+Route::post('/auth/login', [AuthController::class, 'loginUser']);
