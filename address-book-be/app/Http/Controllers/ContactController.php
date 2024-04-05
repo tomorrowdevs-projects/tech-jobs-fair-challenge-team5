@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreContactRequest;
+use App\Http\Requests\UpdateContactRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -16,24 +18,23 @@ class ContactController extends Controller
         return response()->json($contacts);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        $data = $request;
+
         $contact = new User;
 
         /* TODO: remove */
         $contact->password = "x";
         /* /todo */
-        $contact->name = $request->name;
-        $contact->email = $request->email;
-        $contact->phone_number = $request->phone_number;
-        $contact->type_id = $request->type_id;
+        $contact->name = $data->name;
+        $contact->email = $data->email;
+        $contact->phone_number = $data->phone_number;
+        $contact->type_id = $data->type_id;
         $contact->save();
         return response()->json([
             "message" => "Contact added."
@@ -61,13 +62,16 @@ class ContactController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
+        $data = $request;
+
         if (User::where('id', $id)->exists()) {
             $contact = User::find($id);
 
-            $contact->name = $request->name;
-            $contact->email = $request->email;
-            $contact->phone_number = $request->phone_number;
-            $contact->type_id = $request->type_id;
+            $contact->name = $data->name;
+            $contact->email = $data->email;
+            $contact->phone_number = $data->phone_number;
+            $contact->type_id = $data->type_id;
             $contact->save();
             return response()->json([
                 "message" => "Contact updated."

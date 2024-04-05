@@ -15,15 +15,7 @@ class TypeController extends Controller
     {
         $types = Type::all();
 
-        return view('types.index', compact('types'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('types.create');
+        return response()->json($types);
     }
 
     /**
@@ -38,44 +30,66 @@ class TypeController extends Controller
 
         $new_type->save();
 
-        return redirect()->route('types.index')->with('message', "Type $new_type->name added successfully.");
+        return response()->json([
+            "message" => "Type added."
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Type $type)
+    public function show(string $id)
     {
-        return view('types.show', compact('type'));
+        $type = Type::find($id);
+        if (!empty($type)) {
+            return response()->json($type);
+        } else {
+            return response()->json([
+                "message" => "Type not found"
+            ], 404);
+        };
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Type $type)
-    {
-        return view('types.edit', compact('type'));
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTypeRequest $request, Type $type)
+    public function update(UpdateTypeRequest $request, string $id)
     {
         $data = $request->validated();
 
-        $type->update($data);
+        if (Type::where('id', $id)->exists()) {
+            $type = Type::find($id);
 
-        return redirect()->route('types.index')->with('message', "Type $type updated successfully.");
+            $type->name = $data->name;
+
+            $type->save();
+            return response()->json([
+                "message" => "type updated."
+            ]);
+        }
+
+        return response()->json([
+            "message" => "type updated."
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Type $type)
+    public function destroy(string $id)
     {
-        $type->delete();
+        if (Type::where('id', $id)->exists()) {
+            $types = Type::find($id);
+            $types->delete();
 
-        return redirect()->route('types.index')->with('message', "Type $type deleted successfully");
+            return response()->json([
+                "message" => "Type deleted."
+            ], 202);
+        } else {
+            return response()->json([
+                "message" => "Type not found."
+            ], 404);
+        }
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\TypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +25,9 @@ Route::get('/contacts/{id}', [ContactController::class, 'show']);
 Route::post('/contacts', [ContactController::class, 'store']);
 Route::put('/contacts/{id}', [ContactController::class, 'update']);
 Route::delete('/contacts/{id}', [ContactController::class, 'destroy']);
+
+Route::get('/types', [TypeController::class, 'index']);
+Route::get('/types/{id}', [TypeController::class, 'show']);
+Route::post('/types', [TypeController::class, 'store']);
+Route::put('/types/{id}', [TypeController::class, 'update']);
+Route::delete('/types/{id}', [TypeController::class, 'destroy']);
