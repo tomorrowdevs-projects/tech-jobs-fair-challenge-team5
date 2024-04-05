@@ -19,17 +19,25 @@ class ContactController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $contact = new User;
+
+        /* TODO: remove */
+        $contact->password = "x";
+        /* /todo */
+        $contact->name = $request->name;
+        $contact->email = $request->email;
+        $contact->phone_number = $request->phone_number;
+        $contact->type_id = $request->type_id;
+        $contact->save();
+        return response()->json([
+            "message" => "Contact added."
+        ], 201);
     }
 
     /**
@@ -37,23 +45,34 @@ class ContactController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $contact = User::find($id);
+        if (!empty($contact)) {
+            return response()->json($contact);
+        } else {
+            return response()->json([
+                "message" => "Contact not found"
+            ], 404);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        if (User::where('id', $id)->exists()) {
+            $contact = User::find($id);
+
+            $contact->name = $request->name;
+            $contact->email = $request->email;
+            $contact->phone_number = $request->phone_number;
+            $contact->type_id = $request->type_id;
+            $contact->save();
+            return response()->json([
+                "message" => "Contact updated."
+            ]);
+        }
     }
 
     /**
@@ -61,6 +80,17 @@ class ContactController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if (User::where('id', $id)->exists()) {
+            $contacts = User::find($id);
+            $contacts->delete();
+
+            return response()->json([
+                "message" => "Contact deleted."
+            ], 202);
+        } else {
+            return response()->json([
+                "message" => "Contact not found."
+            ], 404);
+        }
     }
 }
