@@ -21,12 +21,6 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">
-                    <h2>Telephone number</h2>
-                </label>
-                <input type="text" class="form-control" name="phone_number" value="{{ old('phone_number', Auth::user()->phone_number) }}">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">
                     <h2>Authentication level</h2>
                 </label>
                 <input type="text" class="form-control" name="type_id" value="{{ old('type_id', Auth::user()->type_id) }}">

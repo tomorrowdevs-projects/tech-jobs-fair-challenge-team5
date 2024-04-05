@@ -28,7 +28,7 @@ class ContactSeeder extends Seeder
                 'phone_number' => '3456789012'
             ],
             [
-                'type_id' => 4,
+                'type_id' => 3,
                 'name' => 'Charlie Brown',
                 'email' => 'charlie@example.com',
                 'phone_number' => '4567890123'
@@ -52,7 +52,7 @@ class ContactSeeder extends Seeder
                 'phone_number' => '7890123456'
             ],
             [
-                'type_id' => 4,
+                'type_id' => 3,
                 'name' => 'Grace Martinez',
                 'email' => 'grace@example.com',
                 'phone_number' => '8901234567'

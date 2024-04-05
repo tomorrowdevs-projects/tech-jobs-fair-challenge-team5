@@ -15,8 +15,7 @@
                         @endif
 
                         <h1>Logged user: {{ Auth::user()->name }}</h1>
-                        <h2>Email: {{ Auth::user()->email }}</h2>
-                        <h3>Your telephone number: {{Auth::user()->phone_number}}</h3>
+                        <h2>Email: {{ Auth::user()->email }}</h2>ì
                         <h3>Your authentication level: {{Auth::user()->type_id}}</h3>
                         <form action="{{ route('profile.destroy', Auth::user()) }}" method="post">
                             @csrf
