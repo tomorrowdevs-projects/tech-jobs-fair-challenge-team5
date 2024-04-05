@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
-use App\Models\User;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -14,7 +14,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $contacts = User::all();
+        $contacts = Contact::all();
         return response()->json($contacts);
     }
 
@@ -26,11 +26,8 @@ class ContactController extends Controller
     {
         $data = $request;
 
-        $contact = new User;
+        $contact = new Contact;
 
-        /* TODO: remove */
-        $contact->password = "x";
-        /* /todo */
         $contact->name = $data->name;
         $contact->email = $data->email;
         $contact->phone_number = $data->phone_number;
@@ -46,7 +43,7 @@ class ContactController extends Controller
      */
     public function show(string $id)
     {
-        $contact = User::find($id);
+        $contact = Contact::find($id);
         if (!empty($contact)) {
             return response()->json($contact);
         } else {
@@ -65,8 +62,8 @@ class ContactController extends Controller
 
         $data = $request;
 
-        if (User::where('id', $id)->exists()) {
-            $contact = User::find($id);
+        if (Contact::where('id', $id)->exists()) {
+            $contact = Contact::find($id);
 
             $contact->name = $data->name;
             $contact->email = $data->email;
@@ -84,8 +81,8 @@ class ContactController extends Controller
      */
     public function destroy(string $id)
     {
-        if (User::where('id', $id)->exists()) {
-            $contacts = User::find($id);
+        if (Contact::where('id', $id)->exists()) {
+            $contacts = Contact::find($id);
             $contacts->delete();
 
             return response()->json([

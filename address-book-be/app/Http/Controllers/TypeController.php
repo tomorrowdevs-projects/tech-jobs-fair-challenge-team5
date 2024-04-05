@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Type;
 use App\Http\Requests\StoreTypeRequest;
 use App\Http\Requests\UpdateTypeRequest;
+use Illuminate\Http\Request;
 
 class TypeController extends Controller
 {
@@ -21,9 +22,9 @@ class TypeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTypeRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
+        $data = $request;
 
         $new_type = new Type();
         $new_type->name = $data['name'];
@@ -54,9 +55,9 @@ class TypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTypeRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
-        $data = $request->validated();
+        $data = $request;
 
         if (Type::where('id', $id)->exists()) {
             $type = Type::find($id);
