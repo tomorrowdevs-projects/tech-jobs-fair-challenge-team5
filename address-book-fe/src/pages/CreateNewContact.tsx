@@ -1,31 +1,37 @@
 import axios from "axios";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ContactRequest } from "../types";
+import { ContactRequest, Type } from "../types";
 
 const url = "https://applicazioni-web.net/tjf/api"
 
 const CreateNewContact = () => {
     const navigate = useNavigate();
-    const [loading, setLoading] = useState<boolean>(false)
+    const [types, setTypes] = useState<Type[]>([])
     const [newContact, setNewContact] = useState<ContactRequest>({
         name: "",
         email: "",
         phone_number: "",
-        type_id: "2"
+        type_id: ""
     })
-    console.log(loading)
+
+    useEffect(() => {
+        const fetchTypes = async () => {
+            const { data } = await axios.get(`${url}/types`)
+            setTypes(data)
+        }
+        fetchTypes()
+    }, [])
 
     const handleCreateNewContact = async () => {
-        setLoading(true)
-        await axios.post(`${url}/contacts`, newContact).catch((e) => {
-            console.log("Error while creating contact: ", e)
-        })
-        setLoading(false)
-        navigate("/")
+        await axios.post(`${url}/contacts`, newContact)
+            .then(() => navigate("/"))
+            .catch((e) => {
+                console.log("Error while creating contact: ", e)
+            })
     }
 
-    const handleUpdateContact = (val: ChangeEvent<HTMLInputElement>, field: string) => {
+    const handleUpdateContact = (val: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>, field: string) => {
         setNewContact(prev => ({ ...prev, [field]: val.target.value }))
     }
 
@@ -61,6 +67,15 @@ const CreateNewContact = () => {
                     className="w-full rounded-sm text-sm p-2 card-shadow font-arimo my-1"
                     onChange={(val) => handleUpdateContact(val, "phone_number")}
                 />
+            </div>
+            <div className="flex justify-center  items-center gap-2">
+                <label className="font-arimo text-sm w-[50px]">Type:</label>
+                <select id="type" className="rounded-sm shadow-md w-full p-2 font-arimo" onChange={(e) => handleUpdateContact(e, "type_id")}>
+                    <option value="Select a type ..." disabled>Select a type ...</option>
+                    {types?.map((t) => {
+                        return <option key={t.id} value={t.id}>{t.name}</option>
+                    })}
+                </select>
             </div>
             <div className="flex justify-center  items-center gap-2">
                 <button

@@ -76,22 +76,32 @@ const ContactCard = ({
 
   const handleSaveContact = async () => {
     setLoading(true)
-    await axios.put(`${url}/contacts/${contact.id}`, updateContact).catch((e) => {
-      console.log("Error while updating contact: ", e)
-    })
-    setLoading(false)
-    handleSaveClick()
-    refetch()
+    await axios.put(`${url}/contacts/${contact.id}`, updateContact)
+      .then(() => {
+        setLoading(false)
+        handleSaveClick()
+        refetch()
+      })
+      .catch((e) => {
+        setLoading(false)
+        handleSaveClick()
+        console.log("Error while updating contact: ", e)
+      })
   }
 
   const handleDeleteContact = async () => {
     setLoading(true)
-    await axios.delete(`${url}/contacts/${contact.id}`).catch((e) => {
-      console.log("Error while deleting contact: ", e)
-    })
-    setLoading(false)
-    setIsOpen(prev => !prev)
-    refetch()
+    await axios.delete(`${url}/contacts/${contact.id}`)
+      .then(() => {
+        setLoading(false)
+        setIsOpen(prev => !prev)
+        refetch()
+      })
+      .catch((e) => {
+        console.log("Error while deleting contact: ", e)
+        setLoading(false)
+        setIsOpen(prev => !prev)
+      })
   }
 
   return (
