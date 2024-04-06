@@ -1,3 +1,11 @@
+# Team 5
+<a href="https://tech-jobs-fair-challenge-tea-git-e4c957-omars-projects-7352dc01.vercel.app/"><img alt="DEMO" src="https://img.shields.io/badge/DEMO%20-%23E34F26.svg?&style=for-the-badge"/></a>
+### Link Utili
+[Brainstorming Document](
+https://docs.google.com/spreadsheets/d/1tivKgAWHmKLtAdLyd7Fj1hpWmV3QgVRU4Ua2SsGfRos/edit#gid=0)  
+[Server Discord](
+https://discord.gg/HxUmxVZn)
+
 # Tech Jobs Fair Challenge 2024
 
 L'obiettivo finale dell'attività è lavorare su di un progetto ripercorrendo le stesse modalità di lavoro in azienda.
