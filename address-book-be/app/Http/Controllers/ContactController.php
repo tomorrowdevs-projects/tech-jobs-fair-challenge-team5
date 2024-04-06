@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
 use App\Models\Contact;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -12,11 +13,18 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $contacts = Contact::with('type')->get();
+        $searchString = $request->searchString;
 
+        $contacts = Contact::with('type')
+            ->where(function ($query) use ($searchString) {
+                $query->where('name', 'like', "%$searchString%")
+                    ->orWhere('email', 'like', "%$searchString%")
+                    ->orWhere('phone_number', 'like', "%$searchString%");
+            })
+            ->get();
 
         $formattedContacts = $contacts->map(function ($contact) {
             return [
@@ -30,7 +38,6 @@ class ContactController extends Controller
                 'updated_at' => $contact->updated_at,
             ];
         });
-
         return response()->json($formattedContacts);
     }
 
