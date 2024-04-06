@@ -5,13 +5,44 @@ import { FiPlus } from "react-icons/fi";
 import ContactCard from "../components/ContactCard";
 import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
-import { Contact } from "../types";
+import { Contact, Type } from "../types";
 import FiltersSection from "../components/FiltersSection";
+import axios from 'axios';
+import Loader from "../components/Loader";
+
+const url = "https://applicazioni-web.net/tjf/api"
 
 const Home = () => {
   const [selectedCards, setSelectedCards] = useState<Contact[] | undefined>(
     undefined
   );
+  const [types, setTypes] = useState<Type[]>([])
+  const [contacts, setContacts] = useState<Contact[]>([])
+  const [loading, setLoading] = useState<boolean>(true);
+  // const [searchString, setSearchString] = useState<string>("")
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      const fetchTypes = async () => {
+        const { data } = await axios.get(`${url}/types`)
+        setTypes(data)
+      }
+      const fetchContacts = async () => {
+        const { data } = await axios.get(`${url}/contacts`)
+        setContacts(data)
+      }
+
+      await fetchContacts()
+      await fetchTypes()
+      setLoading(false)
+    }
+
+    fetchAll()
+  }, [])
+
+  // useEffect(() => {
+
+  // }, [searchString])
 
   useEffect(() => {
     const handleContextmenu = (e: { preventDefault: () => void }) => {
@@ -27,7 +58,7 @@ const Home = () => {
     if (selectedCards?.length === data?.length) {
       setSelectedCards(undefined);
     } else {
-      setSelectedCards(data.map((c) => c));
+      setSelectedCards(contacts.map((c) => c));
     }
   };
 
@@ -67,9 +98,11 @@ const Home = () => {
         <IoFilterCircleOutline size={40} className="text-primary lg:hidden" />
         <button
           onClick={() => { }}
-          className=" bg-primary p-2 text-white font-semibold lg:flex hidden rounded-sm h-[36px] w-[200px] text-md justify-center items-center"
+          className={`${selectedCards
+            ? "bg-danger transition duration-300 ease-in-out"
+            : "bg-primary transition duration-300 ease-in-out"} p-2 text-white font-semibold lg:flex hidden rounded-sm h-[36px] w-[200px] text-md justify-center items-center`}
         >
-          Add new contact
+          {!selectedCards ? 'Add new contact' : selectedCards.length === 1 ? 'Remove contact' : 'Remove contacts'}
         </button>
       </div>
 
@@ -83,16 +116,32 @@ const Home = () => {
       </div>
       <div className="lg:flex lg:justify-normal lg:w-full justify-between gap-4">
         <div className="flex flex-col justify-center items-center gap-2 lg:bg-white lg:p-4 lg:grid lg:grid-cols-3 lg:w-full lg:rounded-sm lg:shadow-md lg:items-start">
-          {data.map((contact, index) => (
+          {!loading ? contacts.map((contact, index) => (
             <ContactCard
               contact={contact}
               key={index}
               setSelectedCards={setSelectedCards}
               selectedCards={selectedCards}
             />
-          ))}
+          )) :
+            <div className="lg:col-span-3 lg:items-center lg:w-full lg:h-full">
+              <Loader />
+            </div>
+          }
         </div>
-        <FiltersSection />
+        <div className="lg:flex hidden flex-col items-center gap-4">
+          <div className="bg-white flex flex-col justify-center items-center w-full gap-4 p-2">
+            <p className="text-sm font-arimo font-bold text-primary">Sort by</p>
+            <select id="type" className="rounded-sm shadow-md w-full p-2">
+              <option value="Select a sort ..." disabled>Select a sort ...</option>
+              <option value="1">Alphbetically</option>
+              <option value="2">Newest</option>
+              <option value="3">Oldest</option>
+            </select>
+          </div>
+          <FiltersSection types={types} />
+        </div>
+
       </div>
     </div>
   );
