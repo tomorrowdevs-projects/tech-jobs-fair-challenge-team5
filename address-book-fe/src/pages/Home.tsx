@@ -52,7 +52,7 @@ const Home = () => {
       if (searchString) {
         request += `&searchString=${searchString}`
       }
-      if (searchTypes) {
+      if (!!searchTypes) {
         request += `&searchType=${searchTypes}`
       }
       const { data } = await axios.get(request)
@@ -173,7 +173,7 @@ const Home = () => {
             <div className="flex flex-col gap-1 w-full">
               <p className="font-arimo text-sm text-primary">Type</p>
               <select id="type" className="rounded-sm shadow-md w-full p-2 font-arimo" onChange={(e) => setSearchTypes(e.target.value)}>
-                <option value="Select a type ..." >Select a type ...</option>
+                <option value="" >Select a type ...</option>
                 {types?.map((t) => {
                   return <option key={t.id} value={t.id}>{t.name}</option>
                 })}
