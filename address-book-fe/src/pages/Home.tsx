@@ -36,11 +36,10 @@ const Home = () => {
       <button
         type="button"
         className={`lg:hidden fixed flex justify-center items-center shadow-xl bottom-6 right-6 rounded-full
-                ${
-                  selectedCards
-                    ? "bg-danger transition duration-300 ease-in-out transform rotate-45"
-                    : "bg-primary transition duration-300 ease-in-out transform rotate-0"
-                } 
+                ${selectedCards
+            ? "bg-danger transition duration-300 ease-in-out transform rotate-45"
+            : "bg-primary transition duration-300 ease-in-out transform rotate-0"
+          } 
                 text-white border z-20 w-[60px] h-[60px]`}
       >
         <FiPlus size={30} />
@@ -67,9 +66,8 @@ const Home = () => {
         </div>
         <IoFilterCircleOutline size={40} className="text-primary lg:hidden" />
         <button
-          onClick={() => {}}
-          className=" bg-primary py-1 px-2 text-white font-bold max-lg:hidden"
-          style={{ whiteSpace: "nowrap" }}
+          onClick={() => { }}
+          className=" bg-primary p-2 text-white font-semibold lg:flex hidden rounded-sm h-[36px] w-[200px] text-md justify-center items-center"
         >
           Add new contact
         </button>
@@ -83,8 +81,8 @@ const Home = () => {
           </p>
         )}
       </div>
-      <div className="lg:flex justify-between gap-4">
-        <div className="flex flex-col justify-center items-center gap-2 lg:bg-white lg:p-2 lg:grid lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      <div className="lg:flex lg:justify-normal lg:w-full justify-between gap-4">
+        <div className="flex flex-col justify-center items-center gap-2 lg:bg-white lg:p-4 lg:grid lg:grid-cols-3 lg:w-full lg:rounded-sm lg:shadow-md lg:items-start">
           {data.map((contact, index) => (
             <ContactCard
               contact={contact}
@@ -94,9 +92,7 @@ const Home = () => {
             />
           ))}
         </div>
-        <div className="max-lg:hidden">
-          <FiltersSection />
-        </div>
+        <FiltersSection />
       </div>
     </div>
   );

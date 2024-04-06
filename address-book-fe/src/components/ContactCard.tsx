@@ -61,67 +61,60 @@ const ContactCard = ({
     <div
       onClick={handleOnClick}
       {...onLongPress(handleOnLongPress)}
-      className={`flex flex-col w-full justify-between items-center p-2 gap-2 ${
-        isContactSelected
-          ? "bg-primary transition duration-300 ease-in-out"
-          : "bg-white transition duration-300 ease-in-out"
-      } rounded-md card-shadow`}
+      className={`flex flex-col w-full justify-between items-center p-2 gap-2 ${isContactSelected
+        ? "bg-primary transition duration-300 ease-in-out"
+        : "bg-white transition duration-300 ease-in-out"
+        } rounded-md card-shadow`}
     >
       <div className="flex w-full justify-between">
         <div className="flex justify-start items-center gap-2 font-arimo">
           <img
             src={contact.avatar}
             alt={"avatar"}
-            className={`rounded-full w-[50px] h-[50px] border-[1px] bg-white ${
-              isContactSelected
-                ? "border-white transition duration-300 ease-in-out"
-                : "border-primary transition duration-300 ease-in-out"
-            } shadow-lg`}
+            className={`rounded-full w-[50px] h-[50px] border-[1px] bg-white ${isContactSelected
+              ? "border-white transition duration-300 ease-in-out"
+              : "border-primary transition duration-300 ease-in-out"
+              } shadow-lg`}
           />
           <div className="flex flex-col">
             <p
-              className={`${
-                isContactSelected
-                  ? "text-white transition duration-300 ease-in-out"
-                  : "text-primary transition duration-300 ease-in-out"
-              } font-bold`}
+              className={`${isContactSelected
+                ? "text-white transition duration-300 ease-in-out"
+                : "text-primary transition duration-300 ease-in-out"
+                } font-bold`}
             >
               {contact.name}
             </p>
             <div className="flex justify-start items-center gap-2 mb-1">
               <MdOutlineEmail
-                className={`${
-                  isContactSelected
-                    ? "text-white transition duration-300 ease-in-out"
-                    : "text-primary transition duration-300 ease-in-out"
-                }`}
+                className={`${isContactSelected
+                  ? "text-white transition duration-300 ease-in-out"
+                  : "text-primary transition duration-300 ease-in-out"
+                  }`}
               />
               <a
                 href={`mailto:${contact.email}`}
-                className={`text-xs underline ${
-                  isContactSelected
-                    ? "text-white transition duration-300 ease-in-out"
-                    : "text-secondary transition duration-300 ease-in-out"
-                }`}
+                className={`text-xs underline ${isContactSelected
+                  ? "text-white transition duration-300 ease-in-out"
+                  : "text-secondary transition duration-300 ease-in-out"
+                  }`}
               >
                 {contact.email}
               </a>
             </div>
             <div className="flex justify-start items-center gap-2">
               <FaPhone
-                className={`${
-                  isContactSelected
-                    ? "text-white transition duration-300 ease-in-out"
-                    : "text-primary transition duration-300 ease-in-out"
-                }`}
+                className={`${isContactSelected
+                  ? "text-white transition duration-300 ease-in-out"
+                  : "text-primary transition duration-300 ease-in-out"
+                  }`}
               />
               <a
                 href={`tel:${contact.phone}`}
-                className={`text-xs ${
-                  isContactSelected
-                    ? "text-white transition duration-300 ease-in-out"
-                    : "text-secondary transition duration-300 ease-in-out"
-                }`}
+                className={`text-xs ${isContactSelected
+                  ? "text-white transition duration-300 ease-in-out"
+                  : "text-secondary transition duration-300 ease-in-out"
+                  }`}
               >
                 {contact.phone}
               </a>
