@@ -6,9 +6,11 @@ import ContactCard from "../components/ContactCard";
 import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { Contact, Type } from "../types";
-import FiltersSection from "../components/FiltersSection";
+// import FiltersSection from "../components/FiltersSection";
 import axios from 'axios';
 import Loader from "../components/Loader";
+import { useNavigate } from "react-router-dom";
+
 
 const url = "https://applicazioni-web.net/tjf/api"
 
@@ -19,30 +21,47 @@ const Home = () => {
   const [types, setTypes] = useState<Type[]>([])
   const [contacts, setContacts] = useState<Contact[]>([])
   const [loading, setLoading] = useState<boolean>(true);
-  // const [searchString, setSearchString] = useState<string>("")
+  const [searchString, setSearchString] = useState<string>('')
+  const [searchTypes, setSearchTypes] = useState<string | null>(null)
+  const navigate = useNavigate();
+
+
+  const fetchTypes = async () => {
+    const { data } = await axios.get(`${url}/types`)
+    setTypes(data)
+  }
+
+  const fetchContacts = async () => {
+    const { data } = await axios.get(`${url}/contacts`)
+    setContacts(data)
+  }
+
+  const fetchAll = async () => {
+    await fetchContacts()
+    await fetchTypes()
+    setLoading(false)
+  }
 
   useEffect(() => {
-    const fetchAll = async () => {
-      const fetchTypes = async () => {
-        const { data } = await axios.get(`${url}/types`)
-        setTypes(data)
-      }
-      const fetchContacts = async () => {
-        const { data } = await axios.get(`${url}/contacts`)
-        setContacts(data)
-      }
-
-      await fetchContacts()
-      await fetchTypes()
-      setLoading(false)
-    }
-
     fetchAll()
   }, [])
 
-  // useEffect(() => {
+  useEffect(() => {
+    const searchContacts = async () => {
+      let request = `${url}/contacts?`
+      if (searchString) {
+        request += `&searchString=${searchString}`
+      }
+      if (searchTypes) {
+        request += `&searchType=${searchTypes}`
+      }
+      const { data } = await axios.get(request)
+      setContacts(data)
+    }
 
-  // }, [searchString])
+    searchContacts()
+
+  }, [searchString, searchTypes])
 
   useEffect(() => {
     const handleContextmenu = (e: { preventDefault: () => void }) => {
@@ -92,12 +111,17 @@ const Home = () => {
               id="searchString"
               placeholder="Guido Penta ..."
               className="w-full rounded-sm text-sm p-2 card-shadow font-arimo"
+              onChange={(e) => setSearchString(e.target.value)}
             />
           </label>
         </div>
         <IoFilterCircleOutline size={40} className="text-primary lg:hidden" />
         <button
-          onClick={() => { }}
+          onClick={() => {
+            if (!selectedCards) {
+              navigate("/new")
+            }
+          }}
           className={`${selectedCards
             ? "bg-danger transition duration-300 ease-in-out"
             : "bg-primary transition duration-300 ease-in-out"} p-2 text-white font-semibold lg:flex hidden rounded-sm h-[36px] w-[200px] text-md justify-center items-center`}
@@ -116,14 +140,17 @@ const Home = () => {
       </div>
       <div className="lg:flex lg:justify-normal lg:w-full justify-between gap-4">
         <div className="flex flex-col justify-center items-center gap-2 lg:bg-white lg:p-4 lg:grid lg:grid-cols-3 lg:w-full lg:rounded-sm lg:shadow-md lg:items-start">
-          {!loading ? contacts.map((contact, index) => (
-            <ContactCard
-              contact={contact}
-              key={index}
-              setSelectedCards={setSelectedCards}
-              selectedCards={selectedCards}
-            />
-          )) :
+          {!loading ?
+            !!contacts.length ?
+              contacts.map((contact, index) => (
+                <ContactCard
+                  contact={contact}
+                  key={index}
+                  setSelectedCards={setSelectedCards}
+                  selectedCards={selectedCards}
+                  refetch={fetchAll}
+                />
+              )) : <p className="text-primary">No contacts found</p> :
             <div className="lg:col-span-3 lg:items-center lg:w-full lg:h-full">
               <Loader />
             </div>
@@ -139,7 +166,19 @@ const Home = () => {
               <option value="3">Oldest</option>
             </select>
           </div>
-          <FiltersSection types={types} />
+          {/* <FiltersSection types={types} /> */}
+          <div className="lg:flex hidden w-[200px] shadow-md rounded-sm flex-col items-center gap-4 bg-white p-2 h-full">
+            <p className="text-sm font-arimo font-bold text-primary">Filter by</p>
+            <div className="flex flex-col gap-1 w-full">
+              <p className="font-arimo text-sm text-primary">Type</p>
+              <select id="type" className="rounded-sm shadow-md w-full p-2 font-arimo" onChange={(e) => setSearchTypes(e.target.value)}>
+                <option value="Select a type ..." >Select a type ...</option>
+                {types?.map((t) => {
+                  return <option key={t.id} value={t.id}>{t.name}</option>
+                })}
+              </select>
+            </div>
+          </div>
         </div>
 
       </div>

@@ -4,7 +4,7 @@ import {
   MdOutlineEmail,
 } from "react-icons/md";
 import { FaPhone } from "react-icons/fa6";
-import { Contact, ContactUpdateRequest } from "../types";
+import { Contact, ContactRequest } from "../types";
 import useLongPress from "../hooks/useLongPress";
 import { ChangeEvent, Fragment, useMemo, useState } from "react";
 import DefaultAvatar from "../assets/avatar-default.png"
@@ -14,6 +14,7 @@ interface ContactProps {
   contact: Contact;
   setSelectedCards: (value: Contact[] | undefined) => void;
   selectedCards: Contact[] | undefined;
+  refetch: () => void
 }
 
 const url = "https://applicazioni-web.net/tjf/api"
@@ -22,11 +23,12 @@ const ContactCard = ({
   contact,
   setSelectedCards,
   selectedCards,
+  refetch
 }: ContactProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [updateContact, setUpdateContact] = useState<ContactUpdateRequest>({
+  const [updateContact, setUpdateContact] = useState<ContactRequest>({
     name: contact?.name,
     email: contact?.email,
     phone_number: contact?.phone_number,
@@ -72,22 +74,24 @@ const ContactCard = ({
     setUpdateContact(prev => ({ ...prev, [field]: val.target.value }))
   }
 
-  const handleSaveContact = () => {
+  const handleSaveContact = async () => {
     setLoading(true)
-    axios.put(`${url}/contacts/${contact.id}`, updateContact).catch((e) => {
+    await axios.put(`${url}/contacts/${contact.id}`, updateContact).catch((e) => {
       console.log("Error while updating contact: ", e)
     })
     setLoading(false)
     handleSaveClick()
+    refetch()
   }
 
-  const handleDeleteContact = () => {
+  const handleDeleteContact = async () => {
     setLoading(true)
-    axios.delete(`${url}/contacts/${contact.id}`).catch((e) => {
+    await axios.delete(`${url}/contacts/${contact.id}`).catch((e) => {
       console.log("Error while deleting contact: ", e)
     })
     setLoading(false)
-    handleSaveClick()
+    setIsOpen(prev => !prev)
+    refetch()
   }
 
   return (

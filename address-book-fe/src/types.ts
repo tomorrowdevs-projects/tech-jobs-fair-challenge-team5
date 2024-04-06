@@ -15,7 +15,7 @@ export type Type = {
     updated_at: Date
 }
 
-export type ContactUpdateRequest = {
+export type ContactRequest = {
     name: string
     email: string
     type_id: string
