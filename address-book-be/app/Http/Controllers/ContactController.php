@@ -22,7 +22,7 @@ class ContactController extends Controller
             return [
                 'id' => $contact->id,
                 'type_id' => $contact->type_id,
-                'type_name' => $contact->type->name,
+                'type_name' => $contact->type === null ? null : $contact->type->name,
                 'name' => $contact->name,
                 'email' => $contact->email,
                 'phone_number' => $contact->phone_number,
@@ -65,7 +65,7 @@ class ContactController extends Controller
             return response()->json([
                 'id' => $contact->id,
                 'type_id' => $contact->type_id,
-                'type_name' => $contact->type->name,
+                'type_name' => $contact->type === null ? null : $contact->type->name,
                 'name' => $contact->name,
                 'email' => $contact->email,
                 'phone_number' => $contact->phone_number,
