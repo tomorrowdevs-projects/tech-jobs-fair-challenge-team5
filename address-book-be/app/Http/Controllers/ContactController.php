@@ -14,8 +14,24 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::all();
-        return response()->json($contacts);
+
+        $contacts = Contact::with('type')->get();
+
+
+        $formattedContacts = $contacts->map(function ($contact) {
+            return [
+                'id' => $contact->id,
+                'type_id' => $contact->type_id,
+                'type_name' => $contact->type->name,
+                'name' => $contact->name,
+                'email' => $contact->email,
+                'phone_number' => $contact->phone_number,
+                'created_at' => $contact->created_at,
+                'updated_at' => $contact->updated_at,
+            ];
+        });
+
+        return response()->json($formattedContacts);
     }
 
 
