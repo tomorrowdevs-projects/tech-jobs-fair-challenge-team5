@@ -17,17 +17,19 @@ class ContactController extends Controller
     {
 
         $searchString = $request->searchString;
+        $searchType = $request->searchType;
 
-        $contacts = Contact::with('type')
+        $contactsQuery = Contact::with('type')
             ->where(function ($query) use ($searchString) {
                 $query->where('name', 'like', "%$searchString%")
                     ->orWhere('email', 'like', "%$searchString%")
-                    ->orWhere('phone_number', 'like', "%$searchString%")
-                    ->orWhereHas('type', function ($subQuery) use ($searchString) {
-                        $subQuery->where('name', 'like', "%$searchString%");
-                    });
-            })
-            ->get();
+                    ->orWhere('phone_number', 'like', "%$searchString%");
+            });
+        if ($searchType !== null) {
+            $contactsQuery = $contactsQuery->where('type_id', '=', $searchType);
+        }
+
+        $contacts = $contactsQuery->get();
 
         $formattedContacts = $contacts->map(function ($contact) {
             return [

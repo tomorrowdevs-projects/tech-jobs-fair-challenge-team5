@@ -38,7 +38,7 @@ Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
 
 /* $contacts = Contact::with('type')
-->whereHas('type', function ($query) use ($searchString) {
-    $query->where('name', 'like', "%$searchString%");
-})
-->get(); */
+    ->whereHas('type', function ($query) use ($searchString) {
+        $query->where('name', 'like', "%$searchString%");
+    })
+    ->get(); */
