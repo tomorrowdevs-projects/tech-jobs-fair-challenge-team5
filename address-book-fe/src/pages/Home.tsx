@@ -85,6 +85,7 @@ const Home = () => {
     <div className="flex flex-col bg-main p-4 gap-4 h-auto min-h-screen">
       <button
         type="button"
+        onClick={() => navigate("/new")}
         className={`lg:hidden fixed flex justify-center items-center shadow-xl bottom-6 right-6 rounded-full
                 ${selectedCards
             ? "bg-danger transition duration-300 ease-in-out transform rotate-45"
