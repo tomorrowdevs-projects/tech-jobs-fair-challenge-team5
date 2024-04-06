@@ -22,7 +22,10 @@ class ContactController extends Controller
             ->where(function ($query) use ($searchString) {
                 $query->where('name', 'like', "%$searchString%")
                     ->orWhere('email', 'like', "%$searchString%")
-                    ->orWhere('phone_number', 'like', "%$searchString%");
+                    ->orWhere('phone_number', 'like', "%$searchString%")
+                    ->orWhereHas('type', function ($subQuery) use ($searchString) {
+                        $subQuery->where('name', 'like', "%$searchString%");
+                    });
             })
             ->get();
 

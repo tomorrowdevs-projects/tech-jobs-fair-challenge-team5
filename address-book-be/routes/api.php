@@ -35,3 +35,10 @@ Route::delete('/types/{id}', [TypeController::class, 'destroy'])/* ->middleware(
 
 Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
+
+
+/* $contacts = Contact::with('type')
+->whereHas('type', function ($query) use ($searchString) {
+    $query->where('name', 'like', "%$searchString%");
+})
+->get(); */
