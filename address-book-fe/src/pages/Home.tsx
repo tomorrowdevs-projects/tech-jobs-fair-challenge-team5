@@ -5,63 +5,21 @@ import { FiPlus } from "react-icons/fi";
 import ContactCard from "../components/ContactCard";
 import { useEffect, useState, useMemo } from "react";
 import { CiSearch } from "react-icons/ci";
-import { Contact, Type } from "../types";
+import { Contact } from "../types";
 // import FiltersSection from "../components/FiltersSection";
-import axios from 'axios';
 import Loader from "../components/Loader";
 import { useNavigate } from "react-router-dom";
-
-
-const url = "https://applicazioni-web.net/tjf/api"
+import useContacts from "../hooks/useContacts";
 
 const Home = () => {
   const [selectedCards, setSelectedCards] = useState<Contact[] | undefined>(
     undefined
   );
-  const [types, setTypes] = useState<Type[]>([])
-  const [contacts, setContacts] = useState<Contact[]>([])
-  const [loading, setLoading] = useState<boolean>(true);
   const [searchString, setSearchString] = useState<string>('')
   const [searchTypes, setSearchTypes] = useState<string | null>(null)
   const navigate = useNavigate();
 
-
-  const fetchTypes = async () => {
-    const { data } = await axios.get(`${url}/types`)
-    setTypes(data)
-  }
-
-  const fetchContacts = async () => {
-    const { data } = await axios.get(`${url}/contacts`)
-    setContacts(data)
-  }
-
-  const fetchAll = async () => {
-    await fetchContacts()
-    await fetchTypes()
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    fetchAll()
-  }, [])
-
-  useEffect(() => {
-    const searchContacts = async () => {
-      let request = `${url}/contacts?`
-      if (searchString) {
-        request += `&searchString=${searchString}`
-      }
-      if (!!searchTypes) {
-        request += `&searchType=${searchTypes}`
-      }
-      const { data } = await axios.get(request)
-      setContacts(data)
-    }
-
-    searchContacts()
-
-  }, [searchString, searchTypes])
+  const { contacts, types, loading, refetch } = useContacts(searchString, searchTypes)
 
   useEffect(() => {
     const handleContextmenu = (e: { preventDefault: () => void }) => {
@@ -136,7 +94,7 @@ const Home = () => {
       </div>
 
       <div className="flex justify-between items-center text-sm font-arimo font-bold text-primary">
-        <p>Found {contactsFound} contacts</p>
+        {contactsFound > 0 && <p>Found {contactsFound} contacts</p>}
         {selectedCards && (
           <p onClick={handleSelect}>
             {selectedCards?.length === data?.length ? "Unselect" : "Select"} all
@@ -153,7 +111,7 @@ const Home = () => {
                   key={index}
                   setSelectedCards={setSelectedCards}
                   selectedCards={selectedCards}
-                  refetch={fetchAll}
+                  refetch={refetch}
                 />
               )) : <p className="text-primary">No contacts found</p> :
             <div className="lg:col-span-3 lg:items-center lg:w-full lg:h-full">

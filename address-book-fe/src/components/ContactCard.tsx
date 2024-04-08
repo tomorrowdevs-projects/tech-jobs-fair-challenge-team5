@@ -8,7 +8,7 @@ import { Contact, ContactRequest } from "../types";
 import useLongPress from "../hooks/useLongPress";
 import { ChangeEvent, Fragment, useMemo, useState } from "react";
 import DefaultAvatar from "../assets/avatar-default.png"
-import axios from "axios"
+import useContact from "../hooks/useContact";
 
 interface ContactProps {
   contact: Contact;
@@ -16,8 +16,6 @@ interface ContactProps {
   selectedCards: Contact[] | undefined;
   refetch: () => void
 }
-
-const url = "https://applicazioni-web.net/tjf/api"
 
 const ContactCard = ({
   contact,
@@ -27,14 +25,15 @@ const ContactCard = ({
 }: ContactProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
   const [updateContact, setUpdateContact] = useState<ContactRequest>({
     name: contact?.name,
     email: contact?.email,
     phone_number: contact?.phone_number,
     type_id: contact?.type_id
   })
+
   const onLongPress = useLongPress();
+  const { saveContact, deleteContact, loading } = useContact(contact?.id, updateContact, setIsOpen, setIsEdit, refetch)
 
   const isContactSelected = useMemo(() => {
     return !!selectedCards?.find((c) => c.name === contact?.name);
@@ -72,36 +71,6 @@ const ContactCard = ({
 
   const handleUpdateContact = (val: ChangeEvent<HTMLInputElement>, field: string) => {
     setUpdateContact(prev => ({ ...prev, [field]: val.target.value }))
-  }
-
-  const handleSaveContact = async () => {
-    setLoading(true)
-    await axios.put(`${url}/contacts/${contact.id}`, updateContact)
-      .then(() => {
-        setLoading(false)
-        handleSaveClick()
-        refetch()
-      })
-      .catch((e) => {
-        setLoading(false)
-        handleSaveClick()
-        console.log("Error while updating contact: ", e)
-      })
-  }
-
-  const handleDeleteContact = async () => {
-    setLoading(true)
-    await axios.delete(`${url}/contacts/${contact.id}`)
-      .then(() => {
-        setLoading(false)
-        setIsOpen(prev => !prev)
-        refetch()
-      })
-      .catch((e) => {
-        console.log("Error while deleting contact: ", e)
-        setLoading(false)
-        setIsOpen(prev => !prev)
-      })
   }
 
   return (
@@ -215,17 +184,17 @@ const ContactCard = ({
                 >
                   EDIT
                 </button>
-                <button className="bg-danger p-1 rounded-sm text-white font-bold w-full" onClick={handleDeleteContact}>
+                <button className="bg-danger p-1 rounded-sm text-white font-bold w-full" onClick={deleteContact}>
                   DELETE
                 </button>
               </Fragment>
             ) : (
               <Fragment>
-                <button className="bg-tertiary p-1 rounded-sm text-white font-bold w-full" onClick={handleSaveClick} disabled={loading}>
+                <button className="bg-secondary p-1 rounded-sm text-white font-bold w-full" onClick={handleSaveClick} disabled={loading}>
                   CANCEL
                 </button>
                 <button
-                  onClick={handleSaveContact}
+                  onClick={saveContact}
                   disabled={loading}
                   className=" bg-success p-1 rounded-sm text-white font-bold w-full"
                 >

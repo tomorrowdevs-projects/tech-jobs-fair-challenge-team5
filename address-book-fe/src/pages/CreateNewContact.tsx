@@ -79,7 +79,7 @@ const CreateNewContact = () => {
             </div>
             <div className="flex justify-center  items-center gap-2">
                 <button
-                    className="bg-tertiary p-1 rounded-sm text-white font-bold w-full"
+                    className="bg-secondary p-1 rounded-sm text-white font-bold w-full"
                     onClick={() => navigate("/")}
                 >
                     CANCEL
