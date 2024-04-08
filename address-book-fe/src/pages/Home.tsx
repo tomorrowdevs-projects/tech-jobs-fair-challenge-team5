@@ -3,7 +3,7 @@ import data from "../assets/data.json";
 import { IoFilterCircleOutline } from "react-icons/io5";
 import { FiPlus } from "react-icons/fi";
 import ContactCard from "../components/ContactCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { CiSearch } from "react-icons/ci";
 import { Contact, Type } from "../types";
 // import FiltersSection from "../components/FiltersSection";
@@ -81,6 +81,10 @@ const Home = () => {
     }
   };
 
+  const contactsFound = useMemo(() => {
+    return contacts?.length ?? 0
+  }, [contacts])
+
   return (
     <div className="flex flex-col bg-main p-4 gap-4 h-auto min-h-screen">
       <button
@@ -132,7 +136,7 @@ const Home = () => {
       </div>
 
       <div className="flex justify-between items-center text-sm font-arimo font-bold text-primary">
-        <p>Found 10 contacts</p>
+        <p>Found {contactsFound} contacts</p>
         {selectedCards && (
           <p onClick={handleSelect}>
             {selectedCards?.length === data?.length ? "Unselect" : "Select"} all
