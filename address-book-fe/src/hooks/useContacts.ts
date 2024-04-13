@@ -1,23 +1,33 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Contact, Type } from "../types"
+import { atom } from 'nanostores'
+import { useStore } from '@nanostores/react'
 
 const url = "https://applicazioni-web.net/tjf/api"
+export const $types = atom<Type[]>([])
+export const $contacts = atom<Contact[]>([])
 
-const useContacts = (searchString: string, searchTypes: string | null) => {
-
-    const [contacts, setContacts] = useState<Contact[]>([])
-    const [types, setTypes] = useState<Type[]>([])
+const useContacts = (searchString?: string | null, searchTypes?: string | null) => {
+    const types = useStore($types)
+    const contacts = useStore($contacts)
     const [loading, setLoading] = useState<boolean>(true);
 
     const fetchTypes = async () => {
         const { data } = await axios.get(`${url}/types`)
-        setTypes(data)
+        $types.set(data)
     }
 
     const fetchContacts = async () => {
-        const { data } = await axios.get(`${url}/contacts`)
-        setContacts(data)
+        let request = `${url}/contacts?`
+        if (searchString) {
+            request += `&searchString=${searchString}`
+        }
+        if (searchTypes) {
+            request += `&searchType=${searchTypes}`
+        }
+        const { data } = await axios.get(request)
+        $contacts.set(data)
     }
 
     const fetchAll = async () => {
@@ -26,32 +36,12 @@ const useContacts = (searchString: string, searchTypes: string | null) => {
         setLoading(false)
     }
 
-    useEffect(() => {
-        fetchAll()
-    }, [])
-
-    useEffect(() => {
-        const searchContacts = async () => {
-            let request = `${url}/contacts?`
-            if (searchString) {
-                request += `&searchString=${searchString}`
-            }
-            if (!!searchTypes) {
-                request += `&searchType=${searchTypes}`
-            }
-            const { data } = await axios.get(request)
-            setContacts(data)
-        }
-
-        searchContacts()
-
-    }, [searchString, searchTypes])
-
     return {
         contacts,
         types,
         loading,
-        refetch: fetchAll
+        refetch: fetchAll,
+        getContacts: fetchContacts
     }
 }
 

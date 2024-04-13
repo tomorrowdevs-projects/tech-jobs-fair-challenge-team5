@@ -6,22 +6,24 @@ import ContactCard from "../components/ContactCard";
 import { useEffect, useState, useMemo } from "react";
 import { CiSearch } from "react-icons/ci";
 import { Contact } from "../types";
-// import FiltersSection from "../components/FiltersSection";
 import Loader from "../components/Loader";
 import { useNavigate } from "react-router-dom";
 import useContacts from "../hooks/useContacts";
+import { cloneDeep, orderBy } from "lodash";
 
 const Home = () => {
   const [selectedCards, setSelectedCards] = useState<Contact[] | undefined>(
     undefined
   );
-  const [searchString, setSearchString] = useState<string>('')
+  const [searchString, setSearchString] = useState<string | null>(null)
   const [searchTypes, setSearchTypes] = useState<string | null>(null)
+  const [sort, setSort] = useState<string>("0")
   const navigate = useNavigate();
 
-  const { contacts, types, loading, refetch } = useContacts(searchString, searchTypes)
+  const { contacts, types, loading, refetch, getContacts } = useContacts(searchString, searchTypes)
 
   useEffect(() => {
+    refetch()
     const handleContextmenu = (e: { preventDefault: () => void }) => {
       e.preventDefault();
     };
@@ -31,17 +33,33 @@ const Home = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (searchString !== null || searchTypes !== null) {
+      getContacts()
+    }
+  }, [searchString, searchTypes])
+
   const handleSelect = () => {
     if (selectedCards?.length === data?.length) {
       setSelectedCards(undefined);
     } else {
-      setSelectedCards(contacts.map((c) => c));
+      setSelectedCards(contacts?.map((c) => c));
     }
   };
 
   const contactsFound = useMemo(() => {
     return contacts?.length ?? 0
   }, [contacts])
+
+  const sortedContacts = useMemo(() => {
+    const clonedContacts = cloneDeep(contacts)
+    switch (sort) {
+      case "1": return orderBy(clonedContacts, ["name"], "asc")
+      case "2": return orderBy(clonedContacts, ["created_at"], "desc")
+      case "3": return orderBy(clonedContacts, ["created_at"], "asc")
+      default: return clonedContacts
+    }
+  }, [sort, contacts])
 
   return (
     <div className="flex flex-col bg-main p-4 gap-4 h-auto min-h-screen">
@@ -102,16 +120,17 @@ const Home = () => {
         )}
       </div>
       <div className="lg:flex lg:justify-normal lg:w-full justify-between gap-4">
-        <div className="flex flex-col justify-center items-center gap-2 lg:bg-white lg:p-4 lg:grid lg:grid-cols-3 lg:w-full lg:rounded-sm lg:shadow-md lg:items-start">
+        <div className="flex flex-col justify-center gap-2 items-center lg:bg-white lg:p-4 lg:grid lg:grid-cols-3 lg:w-full lg:rounded-sm lg:shadow-md lg:items-start">
           {!loading ?
-            !!contacts.length ?
-              contacts.map((contact, index) => (
+            !!sortedContacts?.length ?
+              sortedContacts.map((contact, index) => (
                 <ContactCard
                   contact={contact}
                   key={index}
                   setSelectedCards={setSelectedCards}
                   selectedCards={selectedCards}
                   refetch={refetch}
+                  index={index}
                 />
               )) : <p className="text-primary">No contacts found</p> :
             <div className="lg:col-span-3 lg:items-center lg:w-full lg:h-full">
@@ -122,8 +141,8 @@ const Home = () => {
         <div className="lg:flex hidden flex-col items-center gap-4">
           <div className="bg-white flex flex-col justify-center items-center w-full gap-4 p-2">
             <p className="text-sm font-arimo font-bold text-primary">Sort by</p>
-            <select id="type" className="rounded-sm shadow-md w-full p-2">
-              <option value="Select a sort ..." disabled>Select a sort ...</option>
+            <select id="type" className="rounded-sm shadow-md w-full p-2" onChange={(e) => setSort(e.target.value)}>
+              <option value="0">Select a sort ...</option>
               <option value="1">Alphbetically</option>
               <option value="2">Newest</option>
               <option value="3">Oldest</option>

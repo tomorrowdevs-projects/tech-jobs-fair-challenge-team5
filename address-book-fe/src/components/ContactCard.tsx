@@ -15,13 +15,15 @@ interface ContactProps {
   setSelectedCards: (value: Contact[] | undefined) => void;
   selectedCards: Contact[] | undefined;
   refetch: () => void
+  index: number
 }
 
 const ContactCard = ({
   contact,
   setSelectedCards,
   selectedCards,
-  refetch
+  refetch,
+  index,
 }: ContactProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -33,7 +35,7 @@ const ContactCard = ({
   })
 
   const onLongPress = useLongPress();
-  const { saveContact, deleteContact, loading } = useContact(contact?.id, updateContact, setIsOpen, setIsEdit, refetch)
+  const { saveContact, deleteContact, loading } = useContact(updateContact, contact?.id, setIsOpen, setIsEdit, refetch)
 
   const isContactSelected = useMemo(() => {
     return !!selectedCards?.find((c) => c.name === contact?.name);
@@ -80,7 +82,7 @@ const ContactCard = ({
       className={`flex flex-col w-full justify-between items-center p-2 gap-2 ${isContactSelected
         ? "bg-primary transition duration-300 ease-in-out"
         : "bg-white transition duration-300 ease-in-out"
-        } rounded-md card-shadow`}
+        } ${(index + 1) % 3 !== 0 ? 'lg:border-r-[1px]' : ''} lg:border-cancel lg:no-shadow lg:rounded-none rounded-md card-shadow`}
     >
       <div className="flex w-full justify-between">
         <div className="flex justify-start items-center gap-2 font-arimo">
