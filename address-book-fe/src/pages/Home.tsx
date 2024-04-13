@@ -130,7 +130,6 @@ const Home = () => {
                   setSelectedCards={setSelectedCards}
                   selectedCards={selectedCards}
                   refetch={refetch}
-                  index={index}
                 />
               )) : <p className="text-primary">No contacts found</p> :
             <div className="lg:col-span-3 lg:items-center lg:w-full lg:h-full">
@@ -141,19 +140,18 @@ const Home = () => {
         <div className="lg:flex hidden flex-col items-center gap-4">
           <div className="bg-white flex flex-col justify-center items-center w-full gap-4 p-2">
             <p className="text-sm font-arimo font-bold text-primary">Sort by</p>
-            <select id="type" className="rounded-sm shadow-md w-full p-2" onChange={(e) => setSort(e.target.value)}>
+            <select id="type" className="rounded-sm border-[1px] border-cancel w-full p-2" onChange={(e) => setSort(e.target.value)}>
               <option value="0">Select a sort ...</option>
               <option value="1">Alphbetically</option>
               <option value="2">Newest</option>
               <option value="3">Oldest</option>
             </select>
           </div>
-          {/* <FiltersSection types={types} /> */}
           <div className="lg:flex hidden w-[200px] shadow-md rounded-sm flex-col items-center gap-4 bg-white p-2 h-full">
             <p className="text-sm font-arimo font-bold text-primary">Filter by</p>
             <div className="flex flex-col gap-1 w-full">
               <p className="font-arimo text-sm text-primary">Type</p>
-              <select id="type" className="rounded-sm shadow-md w-full p-2 font-arimo" onChange={(e) => setSearchTypes(e.target.value)}>
+              <select id="type" className="rounded-sm border-[1px] border-cancel w-full p-2 font-arimo" onChange={(e) => setSearchTypes(e.target.value)}>
                 <option value="" >Select a type ...</option>
                 {types?.map((t) => {
                   return <option key={t.id} value={t.id}>{t.name}</option>

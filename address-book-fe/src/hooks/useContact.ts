@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const url = "https://applicazioni-web.net/tjf/api"
 
 const useContact = (contactRequest: ContactRequest, contactId?: string, setIsOpen?: (value: boolean) => void, setIsEdit?: (value: boolean) => void, refetch?: () => void) => {
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const createContact = async () => {

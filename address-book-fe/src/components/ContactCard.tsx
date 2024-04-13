@@ -15,15 +15,13 @@ interface ContactProps {
   setSelectedCards: (value: Contact[] | undefined) => void;
   selectedCards: Contact[] | undefined;
   refetch: () => void
-  index: number
 }
 
 const ContactCard = ({
   contact,
   setSelectedCards,
   selectedCards,
-  refetch,
-  index,
+  refetch
 }: ContactProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -82,7 +80,7 @@ const ContactCard = ({
       className={`flex flex-col w-full justify-between items-center p-2 gap-2 ${isContactSelected
         ? "bg-primary transition duration-300 ease-in-out"
         : "bg-white transition duration-300 ease-in-out"
-        } ${(index + 1) % 3 !== 0 ? 'lg:border-r-[1px]' : ''} lg:border-cancel lg:no-shadow lg:rounded-none rounded-md card-shadow`}
+        } lg:border-[1px] lg:border-cancel lg:no-shadow rounded-md card-shadow`}
     >
       <div className="flex w-full justify-between">
         <div className="flex justify-start items-center gap-2 font-arimo">
@@ -158,21 +156,21 @@ const ContactCard = ({
               <input
                 type="text"
                 placeholder="Name"
-                className="w-full rounded-sm text-sm p-2 card-shadow font-arimo my-1"
+                className="w-full rounded-sm text-sm p-2 border-[1px] border-cancel font-arimo my-1"
                 onChange={(val) => handleUpdateContact(val, "name")}
               />
               <label className="font-arimo text-sm">Email:</label>
               <input
-                type="text"
+                type="email"
                 placeholder="Email"
-                className="w-full rounded-sm text-sm p-2 card-shadow font-arimo my-1"
+                className="w-full rounded-sm text-sm p-2 border-[1px] border-cancel font-arimo my-1"
                 onChange={(val) => handleUpdateContact(val, "email")}
               />
               <label className="font-arimo text-sm">Phone Number:</label>
               <input
-                type="text"
+                type="tel"
                 placeholder="Phone Number"
-                className="w-full rounded-sm text-sm p-2 card-shadow font-arimo my-1"
+                className="w-full rounded-sm text-sm p-2 border-[1px] border-cancel font-arimo my-1"
                 onChange={(val) => handleUpdateContact(val, "phone_number")}
               />
             </div>
